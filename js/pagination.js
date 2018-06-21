@@ -1,10 +1,12 @@
 
+"use strict";
 
 var studentItems = $('.student-item');
 var studentSearch = '<div class = "student-search"><input id = "search" placeholder = "Find students..."><button>Search</button></div>';
 var pagination = '<div class = "pagination"><ul></ul></div>';
 var studentList = pageSplitter(studentItems)
 
+$('.page-header.cf').append(studentSearch);
 
 function pageSplitter(list){
 
@@ -13,13 +15,14 @@ function pageSplitter(list){
 	while (oldList.length){
 		pagesArray.push(oldList.splice(0,10));
 	}
+	return pagesArray;
 
 }
 function showPage(pageNumber, pageList) {
 // first hide all students on the page
-$(".student-list li").hide()
+$(".student-list li").hide();
 // then loop through all students in our student list argument
-$.each('pageList', function(index, page){
+$.each(pageList, function(index, page){
 	if(pageNumber == index){
 		$.each(page, function(i,listItem){
 		$(listItem).fadeIn('fast');
@@ -31,7 +34,7 @@ $.each('pageList', function(index, page){
 
 
 
-function appendPageLinks(studentList) {
+function appendPageLinks(pageList) {
 // determine how many pages for this student list
 $('.page').append(pagination)
 var numPages = pageList.length;
@@ -54,7 +57,7 @@ $(".pagination ul li a").on("click", function(e){
 //Search function. Search by name or email.
 
 function searchList() {
-	var searchTerm = $('#serach').val().toLowerCase().trim();
+	var searchTerm = $('#search').val().toLowerCase().trim();
 
 		var filteredStudents = studentItems.filter(function(i){
 			var studentEmail = $(this).find('.email').text();
@@ -75,7 +78,7 @@ function searchList() {
 		if(filteredStudents.length>=10){
 			appendPageLinks(paginatedStudents)
 		}
-		showPage(0, paginated_students);
+		showPage(0, paginatedStudents);
 
 }
 
